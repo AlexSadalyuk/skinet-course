@@ -371,3 +371,7 @@ FodyWeavers.xsd
 appsettings.json
 
 *.db
+API/obj/API.csproj.nuget.dgspec.json
+API/obj/API.csproj.nuget.g.props
+API/obj/project.assets.json
+API/obj/project.nuget.cache
