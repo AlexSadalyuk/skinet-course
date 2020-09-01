@@ -3,16 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Infrastructure.Data;
-using Core.Interfaces;
 using API.Helpers;
 using AutoMapper;
 using API.Middleware;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using API.Errors;
-using Microsoft.OpenApi.Models;
 using API.Extensions;
 
 namespace API
@@ -41,6 +35,15 @@ namespace API
             services.AddApplicationServices();
 
             services.AddSwaggerServiceExtensions();
+
+            services.AddCors(options => 
+            {
+                options.AddPolicy("CorsPolicy", policy => {
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .WithOrigins("https://localhost:4200");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +56,8 @@ namespace API
 
             app.UseRouting();
             app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
