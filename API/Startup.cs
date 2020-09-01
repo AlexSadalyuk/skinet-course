@@ -8,6 +8,12 @@ using Infrastructure.Data;
 using Core.Interfaces;
 using API.Helpers;
 using AutoMapper;
+using API.Middleware;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using API.Errors;
+using Microsoft.OpenApi.Models;
+using API.Extensions;
 
 namespace API
 {
@@ -31,17 +37,15 @@ namespace API
                 options.UseSqlite(connectionString);
             });
             services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+          
+            services.AddApplicationServices();
+
             services.AddSwaggerServiceExtensions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
